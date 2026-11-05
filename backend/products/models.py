@@ -1,9 +1,26 @@
 from django.db import models
-
+from categories.models import Category
+from suppliers.models import Supplier
 
 class Product(models.Model):
     name = models.CharField(max_length=200)
     sku = models.CharField(max_length=50, unique=True)  #Stock Keeping Unit.
+    category = models.ForeignKey(
+    Category,
+    on_delete=models.PROTECT,
+    related_name="products",
+    null=True,
+    blank=True
+    )
+
+    supplier = models.ForeignKey(
+    Supplier,
+    on_delete=models.PROTECT,
+    related_name="products",
+    null=True,
+    blank=True
+    )
+
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     quantity = models.PositiveIntegerField(default=0)

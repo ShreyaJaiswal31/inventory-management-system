@@ -9,6 +9,8 @@ class ProductAdmin(admin.ModelAdmin):
         "id",
         "name",
         "sku",
+        "category",
+        "supplier",
         "price",
         "quantity",
         "reorder_level",
@@ -16,11 +18,7 @@ class ProductAdmin(admin.ModelAdmin):
         "created_at",
     )
 
-    search_fields = (
-        "name",
-        "sku",
-    )
 
-    list_filter = (
-        "is_active",
-    )
+    list_display_links = ("name",)
+    search_fields = ("name", "sku")
+    list_filter = ("is_active", "category", "supplier")
