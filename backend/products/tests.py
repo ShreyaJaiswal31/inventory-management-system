@@ -86,19 +86,16 @@ class ProductAPITests(APITestCase):
             status.HTTP_400_BAD_REQUEST
         )
 
-    def test_update_product_quantity(self):
-        data = {"quantity": 50}
+    def test_quantity_cannot_be_changed_directly(self):
+        original_quantity = self.product.quantity
 
         response = self.client.patch(
-            self.detail_url,
-            data,
-            format="json"
-        )
-
-        self.assertEqual(
-            response.status_code,
-            status.HTTP_200_OK
+            f"/api/products/{self.product.id}/",
+            {"quantity": 50},
+            format="json",
         )
 
         self.product.refresh_from_db()
-        self.assertEqual(self.product.quantity, 50)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(self.product.quantity, original_quantity)
